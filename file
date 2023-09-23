@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+
+using namespace std;
+
+// Define a struct for representing products
+struct Product {
+    string name;
+    double price;
+};
+
+// Function to display the available products
+void displayProducts(const vector<Product>& products) {
+    cout << "Available Products:" << endl;
+    cout << "-------------------" << endl;
+    for (int i = 0; i < products.size(); ++i) {
+        cout << i + 1 << ". " << products[i].name << " - $" << fixed << setprecision(2) << products[i].price << endl;
+    }
+    cout << endl;
+}
+
+int main() {
+    vector<Product> products = {
+        {"Product A", 10.99},
+        {"Product B", 5.99},
+        {"Product C", 7.49},
+        {"Product D", 3.99}
+    };
+
+    vector<Product> shoppingCart;
+    char choice;
+
+    do {
+        displayProducts(products);
+
+        cout << "Select a product to add to the cart (1-" << products.size() << ") or press 'Q' to quit: ";
+        cin >> choice;
+
+        if (choice == 'Q' || choice == 'q') {
+            break;
+        }
+
+        int productIndex = choice - '1';
+
+        if (productIndex >= 0 && productIndex < products.size()) {
+            shoppingCart.push_back(products[productIndex]);
+            cout << "Added " << products[productIndex].name << " to the cart." << endl;
+        } else {
+            cout << "Invalid choice. Please select a valid product or 'Q' to quit." << endl;
+        }
+
+        cout << "Do you want to continue shopping? (Y/N): ";
+        cin >> choice;
+    } while (choice == 'Y' || choice == 'y');
+
+    // Display the shopping cart and calculate the total cost
+    if (!shoppingCart.empty()) {
+        cout << "Your Shopping Cart:" << endl;
+        cout << "-------------------" << endl;
+        double totalCost = 0.0;
+        for (const Product& item : shoppingCart) {
+            cout << item.name << " - $" << fixed << setprecision(2) << item.price << endl;
+            totalCost += item.price;
+        }
+        cout << "Total Cost: $" << fixed << setprecision(2) << totalCost << endl;
+    } else {
+        cout << "Your shopping cart is empty." << endl;
+    }
+
+    return 0;
+}
+
